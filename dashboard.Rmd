@@ -30,9 +30,10 @@ ny_noaa =
 ny_noaa = 
   ny_noaa|>
   mutate(month = factor(month, levels = 1:12, labels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")))
+
+ny_noaa <- sample_n(ny_noaa, 10000)
   
 ```
-
 Column {data-width=650}
 -----------------------------------------------------------------------
 
