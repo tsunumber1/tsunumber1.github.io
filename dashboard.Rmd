@@ -1,0 +1,68 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+```
+```{r}
+data("ny_noaa")
+
+ny_noaa = 
+  ny_noaa |>
+  mutate(date = ymd(date)) |>
+  mutate(
+    year = year(date),
+    month = month(date)) |>
+  drop_na(tmin)|>
+  drop_na(tmax)
+  
+
+ny_noaa = 
+  ny_noaa|>
+  mutate(month = factor(month, levels = 1:12, labels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")))
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+ny_noaa |>
+  mutate(
+    text_label = 
+      str_c("Month:", month)) |> 
+  plot_ly(
+    x = ~tmin, y = ~tmax, type = "scatter", mode = "markers", text = ~text_label, alpha = 0.5 )
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+ny_noaa|>
+  group_by(month) |>
+  summarize(avg_prcp = mean(prcp, na.rm = TRUE))|>
+  plot_ly(x = ~month, y = ~avg_prcp, color = ~month, type = "bar", colors = "viridis")
+```
+
+### Chart C
+
+```{r}
+ny_noaa |> 
+  mutate(month = fct_reorder(month, snow, .na_rm = TRUE)) |>
+  plot_ly(x=~month, y = ~snow, color = ~month, type = "box", colors = "viridis")
+
+```
+
