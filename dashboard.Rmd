@@ -13,6 +13,7 @@ library(tidyverse)
 library(p8105.datasets)
 library(plotly)
 ```
+
 ```{r}
 data("ny_noaa")
 
@@ -29,6 +30,7 @@ ny_noaa =
 ny_noaa = 
   ny_noaa|>
   mutate(month = factor(month, levels = 1:12, labels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")))
+  
 ```
 
 Column {data-width=650}
